@@ -1,0 +1,40 @@
+if exist('Task2/task2_red.bmp', 'file') && exist('Task2/task2_green.bmp', 'file') && exist('Task2/task2_blue.bmp', 'file')
+    
+    r = imread("Task2/task2_red.bmp");
+    g = imread("Task2/task2_green.bmp");
+    b = imread("Task2/task2_blue.bmp");
+    
+    image_original = imread("data/mosaic/crayons.jpg");
+    image_artifact = cat(3, r, g, b);
+    difference_map = (image_original - image_artifact;
+    
+    crop_rect = [40 270 150 120];
+    close_up_original = imresize(imcrop(image_original, crop_rect), 4);
+    close_up = imresize(imcrop(image_artifact, crop_rect), 4);
+    
+    subplot(2,3,1); imshow(image_original); title('original image');
+    subplot(2,3,2); imshow(image_artifact); title('artifact image');
+    subplot(2,3,3); imshow(difference_map); title('difference map');
+    subplot(2,3,4); imshow(close_up_original); title('original cropped part');
+    subplot(2,3,5); imshow(close_up); title('artifact cropped part');
+    % truesize;
+    % resize the figure screen that fit your monitor size
+    
+    if exist('Task3', 'dir') == 0
+        mkdir('Task3');
+    end
+    imwrite(image_artifact, "Task3/task3_artifact_image.jpg");
+    imwrite(difference_map, "Task3/task3_difference_map.jpg");
+    
+    dif_max = max(difference_map, [], 'all');
+    dif_sum = sum(difference_map, 'all');
+    dif_avg = dif_sum;
+    for i = 1:3
+        dif_avg = dif_avg / size(difference_map, i);
+    end
+    
+    disp("Average difference : " + string(dif_avg) + " per pixel");
+    disp("Maximum difference : " + string(dif_max));
+else
+    disp("You SHOULD execute previous tasks first!!");
+end
